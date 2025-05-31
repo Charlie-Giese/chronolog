@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chronolog/console_sink.hpp>
+#include <chronolog/file_sink.hpp>
 #include <chronolog/log_level.hpp>
 #include <chronolog/logger.hpp>
 #include <memory>

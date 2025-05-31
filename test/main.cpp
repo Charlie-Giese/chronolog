@@ -6,14 +6,10 @@ int main() {
 
   Chronolog::set_log_level(LogLevel::DEBUG);
 
-  auto console_sink = std::make_shared<ConsoleSink>();
-  Chronolog::add_sink(console_sink);
+  auto file_sink = std::make_shared<chronolog::FileSink>("log.txt");
+  Chronolog::add_sink(file_sink);
 
-  Chronolog::debug("This is a debug message");
-  Chronolog::info("System initialized");
-  Chronolog::warn("Low disk space");
-  Chronolog::error("Failed to open file");
-  Chronolog::fatal("Unrecoverable error");
+  Chronolog::debug("File log");
 
   return 0;
 }

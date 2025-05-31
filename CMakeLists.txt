@@ -17,6 +17,7 @@ add_library(chronolog
     src/formatter.cpp
     src/logger.cpp
     src/chronolog.cpp
+    src/file_sink.cpp
 )
 
 target_include_directories(chronolog PUBLIC $(PROJECT_SOURCE_DIR)/include)
