@@ -23,22 +23,28 @@ void Logger::set_formatter(std::shared_ptr<Formatter> formatter) {
   formatter_ = std::move(formatter);
 }
 
+void Logger::set_include_thread_id(bool enable) { include_thread_id_ = enable; }
+
 void Logger::log(LogLevel level, const std::string &msg) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (level < min_level_) {
     return;
   }
 
-  LogMessage message{
+  LogMessage log_msg{
       level,
       msg,
       std::chrono::system_clock::now(),
-      std::this_thread::get_id(),
   };
 
-  const std::string formatted = formatter_->format(message);
+  if (include_thread_id_) {
+    log_msg.thread_id = std::this_thread::get_id();
+    log_msg.has_thread_id = true;
+  }
+
+  const std::string formatted = formatter_->format(log_msg);
   for (const auto &sink : sinks_) {
-    sink->log(message, formatted);
+    sink->log(log_msg, formatted);
   }
 }
 

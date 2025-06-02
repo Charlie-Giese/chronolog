@@ -18,6 +18,8 @@ public:
   void add_sink(std::shared_ptr<LogSink> sink);
   void set_formatter(std::shared_ptr<Formatter> formatter);
 
+  void set_include_thread_id(bool enable);
+
   void log(LogLevel level, const std::string &message);
 
 private:
@@ -25,7 +27,7 @@ private:
   std::vector<std::shared_ptr<LogSink>> sinks_;
   std::shared_ptr<Formatter> formatter_;
   std::mutex mutex_; // thread safety
+  bool include_thread_id_ = false;
 };
 
 } // namespace chronolog
-

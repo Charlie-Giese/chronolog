@@ -13,7 +13,7 @@ struct LogMessage {
   std::string text;
   std::chrono::system_clock::time_point timestamp;
   std::thread::id thread_id;
-
+  bool has_thread_id = false;
   // can add more metadata later (file, line, logger name, etc.)
 };
 

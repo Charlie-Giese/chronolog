@@ -6,7 +6,7 @@ int main() {
   using namespace chronolog;
 
   Chronolog::set_log_level(LogLevel::DEBUG);
-
+  Chronolog::enable_thread_ids(true);
   // auto file_sink = std::make_shared<chronolog::FileSink>("log.txt");
   // Chronolog::add_sink(file_sink);
   auto console_sink = std::make_shared<chronolog::ConsoleSink>();

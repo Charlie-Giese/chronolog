@@ -13,6 +13,7 @@ class Chronolog {
 public:
   static void set_log_level(LogLevel level);
   static void add_sink(std::shared_ptr<LogSink> sink);
+  static void enable_thread_ids(bool enable);
 
   static void info(const std::string &message);
   static void warn(const std::string &message);

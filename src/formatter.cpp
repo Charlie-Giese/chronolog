@@ -25,7 +25,7 @@ const char *color_for_level(LogLevel level) {
 
 constexpr const char *reset_color = "\033[0m";
 
-std::string DefaultFormatter::format(LogMessage message) {
+std::string DefaultFormatter::format(LogMessage log_msg) {
   // Get timestamp
   auto now = std::chrono::system_clock::now();
   std::time_t tt = std::chrono::system_clock::to_time_t(now);
@@ -38,10 +38,15 @@ std::string DefaultFormatter::format(LogMessage message) {
 
   std::ostringstream oss;
 
-  const char *color = color_for_level(message.level);
+  const char *color = color_for_level(log_msg.level);
 
   oss << "[" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "]" << color << " ["
-      << to_string(message.level) << "] " << reset_color << message.text;
+      << to_string(log_msg.level) << "]" << reset_color;
+
+  if (log_msg.has_thread_id) {
+    oss << "[Thread " << log_msg.thread_id << "] ";
+  }
+  oss << log_msg.text;
 
   return oss.str();
 }
