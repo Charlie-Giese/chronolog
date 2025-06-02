@@ -6,8 +6,26 @@
 
 namespace chronolog {
 
-std::string DefaultFormatter::format(LogLevel level,
-                                     const std::string &message) {
+const char *color_for_level(LogLevel level) {
+  switch (level) {
+  case LogLevel::DEBUG:
+    return "\033[34m"; // Blue
+  case LogLevel::INFO:
+    return "\033[32m"; // Green
+  case LogLevel::WARN:
+    return "\033[33m"; // Yellow
+  case LogLevel::ERROR:
+    return "\033[31m"; // Red
+  case LogLevel::FATAL:
+    return "\033[35m"; // Magenta
+  default:
+    return "\033[0m"; // Reset
+  }
+}
+
+constexpr const char *reset_color = "\033[0m";
+
+std::string DefaultFormatter::format(LogMessage message) {
   // Get timestamp
   auto now = std::chrono::system_clock::now();
   std::time_t tt = std::chrono::system_clock::to_time_t(now);
@@ -19,9 +37,11 @@ std::string DefaultFormatter::format(LogLevel level,
 #endif
 
   std::ostringstream oss;
-  oss << "[" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "]";
-  oss << " [" << to_string(level) << "] ";
-  oss << message;
+
+  const char *color = color_for_level(message.level);
+
+  oss << "[" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "]" << color << " ["
+      << to_string(message.level) << "] " << reset_color << message.text;
 
   return oss.str();
 }
