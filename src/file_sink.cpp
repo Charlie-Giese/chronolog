@@ -16,10 +16,9 @@ FileSink::FileSink(const std::string &filename, bool truncate) {
 
 FileSink::~FileSink() { out_.close(); }
 
-void FileSink::write(const std::string &message) {
+void FileSink::log(const LogMessage &raw, const std::string &formatted) {
   std::lock_guard<std::mutex> lock(mutex_);
-  out_ << message << std::endl;
+  out_ << formatted << std::endl;
 }
 
 } // namespace chronolog
-
