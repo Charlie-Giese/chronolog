@@ -1,5 +1,6 @@
 #include "chronolog/logger.hpp"
 #include "chronolog/log_level.hpp"
+#include "chronolog/log_message.hpp"
 
 namespace chronolog {
 
@@ -22,15 +23,22 @@ void Logger::set_formatter(std::shared_ptr<Formatter> formatter) {
   formatter_ = std::move(formatter);
 }
 
-void Logger::log(LogLevel level, const std::string &message) {
+void Logger::log(LogLevel level, const std::string &msg) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (level < min_level_) {
     return;
   }
 
-  const std::string formatted = formatter_->format(level, message);
+  LogMessage message{
+      level,
+      msg,
+      std::chrono::system_clock::now(),
+      std::this_thread::get_id(),
+  };
+
+  const std::string formatted = formatter_->format(message);
   for (const auto &sink : sinks_) {
-    sink->write(formatted);
+    sink->log(message, formatted);
   }
 }
 
