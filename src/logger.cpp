@@ -44,7 +44,7 @@ void Logger::log(LogLevel level, const std::string &msg) {
 
   const std::string formatted = formatter_->format(log_msg);
   for (const auto &sink : sinks_) {
-    sink->log(log_msg, formatted);
+    sink->write(log_msg, formatted);
   }
 }
 

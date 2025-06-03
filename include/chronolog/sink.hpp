@@ -7,7 +7,7 @@ namespace chronolog {
 class LogSink {
 public:
   virtual ~LogSink() = default;
-  virtual void log(const LogMessage &raw, const std::string &formatted) = 0;
+  virtual void write(const LogMessage &raw, const std::string &formatted) = 0;
 };
 
 } // namespace chronolog

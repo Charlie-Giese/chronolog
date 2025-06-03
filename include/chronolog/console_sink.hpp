@@ -10,7 +10,7 @@ class ConsoleSink : public LogSink {
 public:
   explicit ConsoleSink(bool use_stderr_for_errors = true);
 
-  void log(const LogMessage &raw, const std::string &formatted) override;
+  void write(const LogMessage &raw, const std::string &formatted) override;
 
 private:
   bool use_stderr_;

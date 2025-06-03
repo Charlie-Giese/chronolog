@@ -12,7 +12,7 @@ public:
   explicit FileSink(const std::string &filename, bool truncate = false);
   ~FileSink();
 
-  void log(const LogMessage &raw, const std::string &formatted) override;
+  void write(const LogMessage &raw, const std::string &formatted) override;
 
 private:
   std::ofstream out_;

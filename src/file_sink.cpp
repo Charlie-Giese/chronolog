@@ -16,7 +16,7 @@ FileSink::FileSink(const std::string &filename, bool truncate) {
 
 FileSink::~FileSink() { out_.close(); }
 
-void FileSink::log(const LogMessage &raw, const std::string &formatted) {
+void FileSink::write(const LogMessage &raw, const std::string &formatted) {
   std::lock_guard<std::mutex> lock(mutex_);
   out_ << formatted << std::endl;
 }

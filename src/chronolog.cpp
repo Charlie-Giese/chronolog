@@ -13,6 +13,10 @@ void Chronolog::add_sink(std::shared_ptr<LogSink> sink) {
   logger().add_sink(std::move(sink));
 }
 
+void Chronolog::set_formatter(std::shared_ptr<Formatter> formatter) {
+  logger().set_formatter(std::move(formatter));
+}
+
 void Chronolog::enable_thread_ids(bool enable) {
   logger().set_include_thread_id(enable);
 }

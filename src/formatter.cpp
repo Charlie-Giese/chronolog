@@ -23,20 +23,37 @@ const char *color_for_level(LogLevel level) {
   }
 }
 
+std::string escape_json(const std::string &input) {
+  std::ostringstream oss;
+  for (char c : input) {
+    switch (c) {
+    case '"':
+      oss << "\\\"";
+      break;
+    case '\\':
+      oss << "\\\\";
+      break;
+    case '\n':
+      oss << "\\n";
+      break;
+    case '\t':
+      oss << "\\t";
+      break;
+    default:
+      oss << c;
+    }
+  }
+  return oss.str();
+}
+
 constexpr const char *reset_color = "\033[0m";
 
-std::string DefaultFormatter::format(LogMessage log_msg) {
-  // Get timestamp
-  auto now = std::chrono::system_clock::now();
-  std::time_t tt = std::chrono::system_clock::to_time_t(now);
-  std::tm tm;
-#if defined(_WIN32)
-  localtime_s(&tm, &tt);
-#else
-  localtime_r(&tt, &tm);
-#endif
+std::string DefaultFormatter::format(const LogMessage &log_msg) {
 
   std::ostringstream oss;
+
+  auto time = std::chrono::system_clock::to_time_t(log_msg.timestamp);
+  std::tm tm = *std::localtime(&time);
 
   const char *color = color_for_level(log_msg.level);
 
@@ -48,6 +65,22 @@ std::string DefaultFormatter::format(LogMessage log_msg) {
   }
   oss << log_msg.text;
 
+  return oss.str();
+}
+
+std::string JsonFormatter::format(const LogMessage &log_msg) {
+
+  auto time = std::chrono::system_clock::to_time_t(log_msg.timestamp);
+  std::tm tm = *std::localtime(&time);
+
+  std::ostringstream oss;
+  oss << "{";
+  oss << "\"timestamp\":\"" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "\",";
+  oss << "\"level\":\"" << to_string(log_msg.level) << "\",";
+  oss << "\"message\":\"" << escape_json(log_msg.text) << "\",";
+  oss << "\"thread_id\":" << log_msg.thread_id;
+
+  oss << "}";
   return oss.str();
 }
 

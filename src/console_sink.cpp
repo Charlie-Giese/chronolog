@@ -6,7 +6,7 @@ namespace chronolog {
 ConsoleSink::ConsoleSink(bool use_stderr_for_errors)
     : use_stderr_(use_stderr_for_errors) {}
 
-void ConsoleSink::log(const LogMessage &raw, const std::string &formatted) {
+void ConsoleSink::write(const LogMessage &raw, const std::string &formatted) {
   // Very simple version: just use cout or cerr depending on flag
 
   if (use_stderr_) {
