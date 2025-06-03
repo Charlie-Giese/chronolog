@@ -78,8 +78,9 @@ std::string JsonFormatter::format(const LogMessage &log_msg) {
   oss << "\"timestamp\":\"" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "\",";
   oss << "\"level\":\"" << to_string(log_msg.level) << "\",";
   oss << "\"message\":\"" << escape_json(log_msg.text) << "\",";
-  oss << "\"thread_id\":" << log_msg.thread_id;
-
+  if (log_msg.has_thread_id) {
+    oss << "\"thread_id\":" << log_msg.thread_id;
+  }
   oss << "}";
   return oss.str();
 }
