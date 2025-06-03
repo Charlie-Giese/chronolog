@@ -1,6 +1,4 @@
-#include <chrono>
-#include <chronolog/formatter.hpp>
-#include <ctime>
+#include <chronolog/formatter/default_formatter.hpp>
 #include <iomanip>
 #include <sstream>
 
@@ -23,29 +21,6 @@ const char *color_for_level(LogLevel level) {
   }
 }
 
-std::string escape_json(const std::string &input) {
-  std::ostringstream oss;
-  for (char c : input) {
-    switch (c) {
-    case '"':
-      oss << "\\\"";
-      break;
-    case '\\':
-      oss << "\\\\";
-      break;
-    case '\n':
-      oss << "\\n";
-      break;
-    case '\t':
-      oss << "\\t";
-      break;
-    default:
-      oss << c;
-    }
-  }
-  return oss.str();
-}
-
 constexpr const char *reset_color = "\033[0m";
 
 std::string DefaultFormatter::format(const LogMessage &log_msg) {
@@ -65,23 +40,6 @@ std::string DefaultFormatter::format(const LogMessage &log_msg) {
   }
   oss << log_msg.text;
 
-  return oss.str();
-}
-
-std::string JsonFormatter::format(const LogMessage &log_msg) {
-
-  auto time = std::chrono::system_clock::to_time_t(log_msg.timestamp);
-  std::tm tm = *std::localtime(&time);
-
-  std::ostringstream oss;
-  oss << "{";
-  oss << "\"timestamp\":\"" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "\",";
-  oss << "\"level\":\"" << to_string(log_msg.level) << "\",";
-  oss << "\"message\":\"" << escape_json(log_msg.text) << "\",";
-  if (log_msg.has_thread_id) {
-    oss << "\"thread_id\":" << log_msg.thread_id;
-  }
-  oss << "}";
   return oss.str();
 }
 

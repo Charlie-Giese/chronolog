@@ -1,6 +1,6 @@
 #pragma once
 
-#include <chronolog/formatter.hpp>
+#include <chronolog/formatter/default_formatter.hpp>
 #include <chronolog/log_level.hpp>
 #include <chronolog/sink.hpp>
 #include <memory>

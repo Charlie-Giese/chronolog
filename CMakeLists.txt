@@ -14,10 +14,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_library(chronolog
     src/log_level.cpp
     src/console_sink.cpp
-    src/formatter.cpp
     src/logger.cpp
     src/chronolog.cpp
     src/file_sink.cpp
+    src/formatter/json_formatter.cpp
+    src/formatter/default_formatter.cpp
 )
 
 target_include_directories(chronolog PUBLIC $(PROJECT_SOURCE_DIR)/include)

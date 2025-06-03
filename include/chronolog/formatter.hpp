@@ -31,13 +31,4 @@ public:
   virtual std::string format(const LogMessage &message) = 0;
 };
 
-class DefaultFormatter : public Formatter {
-public:
-  std::string format(const LogMessage &message) override;
-};
-
-class JsonFormatter : public Formatter {
-  std::string format(const LogMessage &message) override;
-};
-
 } // namespace chronolog
